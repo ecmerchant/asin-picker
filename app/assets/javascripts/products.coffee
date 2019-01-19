@@ -8,3 +8,4 @@ $ ->
     .on 'ajax:complete', (event) ->
       response = event.detail[0].response
       $('#updated_by_ajax').html(response)
+      alert('取得完了');

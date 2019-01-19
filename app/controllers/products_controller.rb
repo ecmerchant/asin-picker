@@ -3,7 +3,9 @@ class ProductsController < ApplicationController
   require 'open-uri'
   require 'nokogiri'
   require 'uri'
-
+  require 'typhoeus'
+  require 'csv'
+  require 'kconv'
 
   def search
   end
@@ -12,10 +14,9 @@ class ProductsController < ApplicationController
     begin
       yahoo_url = params[:data][:text]
       ip_address = request.remote_ip
-
+      ua = CSV.read('app/others/User-Agent.csv', headers: false, col_sep: "\t")
       html = OpenURI.open_uri(yahoo_url).read
       doc = Nokogiri::HTML.parse(html)
-
       info = Array.new
 
       doc.xpath('//td[@class="a1"]').each do |node|
@@ -34,13 +35,19 @@ class ProductsController < ApplicationController
         url = URI.encode(url)
 
         logger.debug(url)
-        user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
-
+        user_agent = ua.sample[0]
 
         begin
-          amazon_html = open(url, "User-Agent" => user_agent) do |f|
-            f.read
-          end
+          request = Typhoeus::Request.new(
+            url,
+            headers: {'User-Agent': user_agent},
+            followlocation: true
+          )
+          request.run
+          amazon_html = request.response.body.toutf8
+
+          logger.debug(user_agent)
+          logger.debug(amazon_html)
 
           amazon_doc = Nokogiri::HTML.parse(amazon_html)
           target = amazon_doc.xpath('//li[@id="result_0"]')

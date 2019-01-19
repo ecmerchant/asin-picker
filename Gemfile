@@ -71,6 +71,8 @@ end
 # gem for background processing
 gem 'resque'
 
+gem 'typhoeus'
+
 # gem for html parse
 gem 'nokogiri'
 
