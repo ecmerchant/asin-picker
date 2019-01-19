@@ -5,7 +5,9 @@ $ ->
   $('#request_ajax_update')
     .on 'ajax:send', (event) ->
       alert('データの取得中');
+      dispLoading("処理中...");
     .on 'ajax:complete', (event) ->
       response = event.detail[0].response
       $('#updated_by_ajax').html(response)
+      removeLoading();
       alert('取得完了');

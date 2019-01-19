@@ -98,6 +98,25 @@
           font-size: 14px;
       }
 
+      #loading {
+        display: table;
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        background-color: #fff;
+        opacity: 0.8;
+      }
+
+      #loading .loadingMsg {
+        display: table-cell;
+        text-align: center;
+        vertical-align: middle;
+        padding-top: 140px;
+        background: url(<%= image_path("loading.gif") %>) center center no-repeat;
+      }
+
     }
     </style>
 
@@ -124,10 +143,36 @@
         </div>
       </nav>
     </header>
+
     <%= yield %>
     <script type="text/javascript">
       $('.bs-component [data-toggle="popover"]').popover();
       $('.bs-component [data-toggle="tooltip"]').tooltip();
+
+      /* ------------------------------
+       Loading イメージ表示関数
+       引数： msg 画面に表示する文言
+       ------------------------------ */
+      function dispLoading(msg){
+        // 引数なし（メッセージなし）を許容
+        if( msg == undefined ){
+          msg = "";
+        }
+        // 画面表示メッセージ
+        var dispMsg = "<div class='loadingMsg'>" + msg + "</div>";
+        // ローディング画像が表示されていない場合のみ出力
+        if($("#loading").length == 0){
+          $("body").append("<div id='loading'>" + dispMsg + "</div>");
+        }
+      }
+
+      /* ------------------------------
+       Loading イメージ削除関数
+       ------------------------------ */
+      function removeLoading(){
+        $("#loading").remove();
+      }
+
     </script>
   </body>
 </html>
