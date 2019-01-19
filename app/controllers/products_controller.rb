@@ -31,13 +31,16 @@ class ProductsController < ApplicationController
         image = parent.xpath('./td[@class="i"]//a').css('img')[0].attribute('src').value
         price = parent.xpath('./td[@class="pr1"]/text()')
 
-        url = "https://www.amazon.co.jp/s/ref=nb_sb_noss?__mk_ja_JP=カタカナ&url=search-alias%3Daps&field-keywords=" + title.to_s
+        url = "https://www.amazon.co.jp/s/field-keywords=" + title.to_s
         url = URI.encode(url)
+
+        sleep(0.50)
 
         logger.debug(url)
         user_agent = ua.sample[0]
 
         begin
+=begin
           request = Typhoeus::Request.new(
             url,
             headers: {'User-Agent': user_agent},
@@ -45,9 +48,23 @@ class ProductsController < ApplicationController
           )
           request.run
           amazon_html = request.response.body.toutf8
+=end
+          charset = nil
+          begin
+            amazon_html = open(url, "User-Agent" => user_agent) do |f|
+              charset = f.charset
+              f.read # htmlを読み込んで変数htmlに渡す
+            end
+          rescue OpenURI::HTTPError => error
+            response = error.io
+            logger.debug("\nNo." + pgnum.to_s + "\n")
+            logger.debug("error!!\n")
+            logger.debug(error)
+          end
+
 
           logger.debug(user_agent)
-          logger.debug(amazon_html)
+          #logger.debug(amazon_html)
 
           amazon_doc = Nokogiri::HTML.parse(amazon_html)
           target = amazon_doc.xpath('//li[@id="result_0"]')
