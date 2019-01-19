@@ -1,0 +1,49 @@
+<div class="container">
+  <div class="page-header" id="banner">
+    <div class="row my-4">
+      <div class="col-12">
+        <h1>ASIN検索ツール</h1>
+          <div id="request_ajax_update" >
+            <%= form_tag(products_update_path, method: :post, remote: true) { %>
+              <div class="form-inline">
+                <label for="data[text]">ヤフオクの検索ページ</label>
+                <%= text_field :data, :text, class: 'form-control', style:'margin-left:20px;' %>
+                <%= submit_tag '取得開始', class: 'btn btn-success', style:'margin-left:20px;' %>
+              </div>
+            <% } %>
+          </div>
+        <br>
+        <div id="updated_by_ajax" style="overflow-y:scroll; height:400px; font-size: 9pt;">
+          <table class="table table-hover table-striped table-bordered table-condensed " style="table-layout:fixed; width:100%;">
+            <thead class="thead-light">
+              <tr>
+                <th>ヤフオク画像</th>
+                <th>オークションID</th>
+                <th>ヤフオク商品名</th>
+                <th>ヤフオク価格</th>
+                <th>アマゾン画像</th>
+                <th>ASIN</th>
+                <th>アマゾン商品名</th>
+                <th>アマゾン価格</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% for num in 1..5 do %>
+              <tr style="height:100px;">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

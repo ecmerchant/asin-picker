@@ -1,0 +1,36 @@
+<table class="table table-hover table-striped table-bordered table-condensed header-fixed" style="table-layout:fixed; width:100%;">
+  <thead class="thead-light">
+    <tr>
+      <th style="width:10%;">ヤフオク画像</th>
+      <th style="width:10%;">オークションID</th>
+      <th style="width:20%;">ヤフオク商品名</th>
+      <th style="width:10%;">ヤフオク価格</th>
+      <th style="width:10%;">アマゾン画像</th>
+      <th style="width:10%;">ASIN</th>
+      <th style="width:20%;">アマゾン商品名</th>
+      <th style="width:10%;">アマゾン価格</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% results[:result].each do |tt| %>
+    <tr style="height:100px;">
+      <% if tt[0] != "" then %>
+        <td style="width:10%;"><img src="<%= tt[0] %>" width="100%" height="80px"></td>
+      <% else %>
+        <td style="width:10%;"></td>
+      <% end %>
+      <td style="width:10%;"><%= tt[1] %></td>
+      <td style="width:20%; font-size: 9pt;"><%= tt[2] %></td>
+      <td style="width:10%;"><%= tt[3] %></td>
+      <% if tt[4] != "" then %>
+        <td style="width:10%;"><img src="<%= tt[4] %>" width="100%" height="80px"></td>
+      <% else %>
+        <td style="width:10%;"></td>
+      <% end %>
+      <td style="width:10%;"><%= tt[5] %></td>
+      <td style="width:20%; font-size: 9pt;"><%= tt[6] %></td>
+      <td style="width:10%;"><%= tt[7] %></td>
+    </tr>
+    <% end %>
+  </tbody>
+</table>
